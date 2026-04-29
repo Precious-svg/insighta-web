@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insighta Labs - Profile</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="/profiles">← Back to Profiles</a>
+        <span>@<%= user.username %></span>
+        <form action="/auth/logout" method="POST" style="display:inline">
+            <button type="submit">Logout</button>
+        </form>
+    </nav>
+
+    <div class="container">
+        <h1><%= profile.name %></h1>
+        <div class="profile-card">
+            <div class="profile-row">
+                <span>Gender</span>
+                <span><%= profile.gender %> (<%= profile.gender_probability %>)</span>
+            </div>
+            <div class="profile-row">
+                <span>Age</span>
+                <span><%= profile.age %> (<%= profile.age_group %>)</span>
+            </div>
+            <div class="profile-row">
+                <span>Country</span>
+                <span><%= profile.country_name %> (<%= profile.country_id %>)</span>
+            </div>
+            <div class="profile-row">
+                <span>Country Probability</span>
+                <span><%= profile.country_probability %></span>
+            </div>
+            <div class="profile-row">
+                <span>Created At</span>
+                <span><%= new Date(profile.created_at).toLocaleString() %></span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

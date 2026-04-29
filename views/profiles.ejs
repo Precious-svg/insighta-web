@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insighta Labs - Profiles</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="/profiles">Profiles</a>
+        <a href="/profiles/search">Search</a>
+        <span>@<%= user.username %></span>
+        <form action="/auth/logout" method="POST" style="display:inline">
+            <button type="submit">Logout</button>
+        </form>
+    </nav>
+
+    <div class="container">
+        <h1>Profiles <span class="badge"><%= pagination.total %></span></h1>
+
+        <!-- Filters -->
+        <form method="GET" action="/profiles" class="filters">
+            <input type="text" name="gender" placeholder="Gender" value="<%= filters.gender || '' %>">
+            <input type="text" name="country_id" placeholder="Country ID" value="<%= filters.country_id || '' %>">
+            <input type="text" name="age_group" placeholder="Age Group" value="<%= filters.age_group || '' %>">
+            <input type="number" name="min_age" placeholder="Min Age" value="<%= filters.min_age || '' %>">
+            <input type="number" name="max_age" placeholder="Max Age" value="<%= filters.max_age || '' %>">
+            <select name="sort_by">
+                <option value="">Sort By</option>
+                <option value="age" <%= filters.sort_by === 'age' ? 'selected' : '' %>>Age</option>
+                <option value="gender_probability" <%= filters.sort_by === 'gender_probability' ? 'selected' : '' %>>Gender Probability</option>
+                <option value="created_at" <%= filters.sort_by === 'created_at' ? 'selected' : '' %>>Created At</option>
+            </select>
+            <select name="order">
+                <option value="asc" <%= filters.order === 'asc' ? 'selected' : '' %>>ASC</option>
+                <option value="desc" <%= filters.order === 'desc' ? 'selected' : '' %>>DESC</option>
+            </select>
+            <button type="submit">Filter</button>
+            <a href="/profiles">Clear</a>
+        </form>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+
+        <!-- Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    <th>Age Group</th>
+                    <th>Country</th>
+                    <th>Created At</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% profiles.forEach(profile => { %>
+                <tr onclick="window.location='/profiles/<%= profile.id %>'" style="cursor:pointer">
+                    <td><%= profile.name %></td>
+                    <td><%= profile.gender %></td>
+                    <td><%= profile.age %></td>
+                    <td><%= profile.age_group %></td>
+                    <td><%= profile.country_id %></td>
+                    <td><%= new Date(profile.created_at).toLocaleDateString() %></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Pagination -->
+        <div class="pagination">
+            <% if (pagination.links && pagination.links.prev) { %>
+                <a href="/profiles?page=<%= pagination.page - 1 %>">Previous</a>
+            <% } %>
+            <span>Page <%= pagination.page %> of <%= pagination.total_pages %></span>
+            <% if (pagination.links && pagination.links.next) { %>
+                <a href="/profiles?page=<%= pagination.page + 1 %>">Next</a>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

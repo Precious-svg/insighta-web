@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Insighta Labs - Search</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <nav>
+        <a href="/profiles">Profiles</a>
+        <a href="/profiles/search">Search</a>
+        <span>@<%= user.username %></span>
+        <form action="/auth/logout" method="POST" style="display:inline">
+            <button type="submit">Logout</button>
+        </form>
+    </nav>
+
+    <div class="container">
+        <h1>Natural Language Search</h1>
+
+        <form method="GET" action="/profiles/search" class="search-form">
+            <input 
+                type="text" 
+                name="q" 
+                placeholder="e.g. young males from nigeria" 
+                value="<%= q || '' %>"
+                class="search-input"
+            >
+            <button type="submit">Search</button>
+        </form>
+
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+
+        <% if (results && results.length > 0) { %>
+            <p>Found <%= pagination.total %> results</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Age</th>
+                        <th>Age Group</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% results.forEach(profile => { %>
+                    <tr onclick="window.location='/profiles/<%= profile.id %>'" style="cursor:pointer">
+                        <td><%= profile.name %></td>
+                        <td><%= profile.gender %></td>
+                        <td><%= profile.age %></td>
+                        <td><%= profile.age_group %></td>
+                        <td><%= profile.country_id %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else if (q) { %>
+            <p>No results found.</p>
+        <% } %>
+    </div>
+</body>
+</html>
