@@ -15,7 +15,6 @@ function getHeaders(req) {
 // list all profiles
 router.get('/', async (req, res) => {
     try {
-        console.log('Headers being sent:', getHeaders(req))
         const { gender, country_id, age_group, min_age, max_age, sort_by, order, page, limit } = req.query
 
         const response = await axios.get(`${API_URL}/api/profiles`, {
