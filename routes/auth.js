@@ -33,8 +33,10 @@ router.get('/callback', async (req, res) => {
     req.session.user = { username, role }
     req.session.access_token = access_token
     req.session.refresh_token = refresh_token
+    req.session.save(() => {
+        res.redirect('/profiles')
+    })
 
-    res.redirect('/profiles')
 })
 
 // logout
