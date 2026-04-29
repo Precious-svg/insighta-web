@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(cookieParser())
 app.use(morgan('dev'))
+app.set('trust proxy', 1)
 
 app.use(session({
     secret: process.env.SESSION_SECRET,
@@ -26,6 +27,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
+        sameSite: 'none',
         maxAge: 5 * 60 * 1000 // 5 minutes
     }
 }))
